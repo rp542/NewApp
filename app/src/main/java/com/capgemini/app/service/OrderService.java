@@ -11,4 +11,6 @@ public interface OrderService {
 
 	public Order getOrderById(int orderId);
 
+	public Order updateOrder(Order order);
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class OrderController {
 	@Autowired
 	OrderService orderService;
 
-	@PostMapping("/addtocart/{customerId}")
+	@PostMapping("/cart/{customerId}")
 	public ResponseEntity<Set<Item>> addToCart(@RequestBody Item item, @PathVariable int customerId) {
 		Set<Item> sampleItem = hashMap.get(customerId);
 		if (sampleItem == null) {
@@ -55,12 +56,17 @@ public class OrderController {
 
 	@DeleteMapping("/order/{orderId}")
 	public ResponseEntity<Order> deleteOrder(@PathVariable int orderId) {
-
-		Order o = orderService.getOrderById(orderId);
-
 		orderService.deleteOrder(orderId);
 		return new ResponseEntity<Order>(HttpStatus.OK);
-
 	}
 
+	@PutMapping("/order/cancel")
+	public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
+		return new ResponseEntity<Order>(orderService.cancelOrder(order.getOrderId()), HttpStatus.OK);
+	}
+
+	@PutMapping("/order/update")
+	public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
+		return new ResponseEntity<Order>(orderService.updateOrder(order), HttpStatus.OK);
+	}
 }

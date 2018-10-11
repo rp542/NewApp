@@ -23,13 +23,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order cancelOrder(int orderId) {
 		Optional<Order> optional = orderRepository.findById(orderId);
-		/*
-		 * if (optional.isPresent()) { optional.get().setStatus("cancel");
-		 */
-		return orderRepository.save(optional.get());
-		/*
-		 * } return null;
-		 */
+
+		if (optional.isPresent()) {
+			optional.get().setStatus("cancel");
+
+			return orderRepository.save(optional.get());
+
+		}
+		return null;
+
 	}
 
 	@Override
@@ -41,6 +43,20 @@ public class OrderServiceImpl implements OrderService {
 	public Order getOrderById(int orderId) {
 		Optional<Order> optionalProduct = orderRepository.findById(orderId);
 		return optionalProduct.get();
+
+	}
+
+	@Override
+	public Order updateOrder(Order order) {
+		Optional<Order> optional = orderRepository.findById(order.getOrderId());
+
+		if (optional.isPresent()) {
+			optional.get().setStatus("updated");
+
+			return orderRepository.save(optional.get());
+
+		}
+		return null;
 
 	}
 }
